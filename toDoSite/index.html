@@ -1,0 +1,78 @@
+<html>
+<head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" rel="stylesheet"/>
+<script src="toDo.js" defer></script>
+<link rel="stylesheet" href="toDo.css">
+</head>
+
+
+<body>
+<div id="create">
+<br>
+<h3>Create a new task</h3>
+<br>
+<textarea id="text">
+
+</textarea>
+<br>
+<p>Add a time limit:</p>
+<br>
+<input type="datetime-local" id="time_limit"/>
+<br>
+<br>
+<button onclick="add_task()">Add new task </button>
+
+
+<p>
+<input type="color" value="#ff0000" disabled="disabled"/>
+Red means limit time excedded
+</p>
+<p>
+<input type="color" value="#FFA500"  disabled="disabled"/>
+Orange means 90% of time has elapsed
+</p>
+<p>
+<input type="color" value="#ffff00" disabled="disabled"/>
+Yellow means 50% of  time left has elapsed
+</p>
+<br>
+<p>Upload a file with tasks under json format</p>
+<input type="file" id="addFile" />
+<button onclick="upload()">Submit</button>
+
+
+
+</div>
+
+
+
+
+<div id="left">
+<h1> To do list</h1>
+<div id="details">
+<p id="countTasks"></p>
+<button onclick="sortTime()">Sort by time<br> the earliest first</button>
+</div>
+<br>
+<div id="tasks">
+
+
+</div>
+
+
+</div>
+
+
+<div id="right">
+<h1>Done </h1>
+<p id="countDone"></p>
+<div id="dones"> </div>
+
+</div>
+
+
+
+</body>
+
+
+</html>
