@@ -1,0 +1,35 @@
+.valid
+{
+background-color:white;
+
+
+}
+.invalid
+{
+
+    background-color:red;
+
+
+}
+
+#errors
+{
+color:purple
+
+}
+
+#errors_list
+{
+
+margin-left:5px;
+padding-left:5px;
+
+}
+form div ul li
+{
+text-decoration:none;
+display:inline;
+margin:"0";
+padding:"0";
+
+}

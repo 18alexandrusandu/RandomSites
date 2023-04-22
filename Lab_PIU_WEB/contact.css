@@ -1,0 +1,122 @@
+
+body {
+margin:auto;
+width:80%;
+font:Verdana;
+
+}
+
+div p 
+{
+ margin-left:10px;
+}
+section div img{
+
+height:500px;
+width:325px;
+
+}
+
+
+form
+{
+background-color:#5F9EA0;
+width:800px;
+height:500px;
+margin-left:20px;
+}
+
+
+label
+{
+margin-left:10px;
+}
+input
+{
+background-color: white;
+color:gray;
+border-radius: 5px;
+margin-left:10px;
+}
+
+input:focus {
+  background-color: yellow;
+  color:black;
+}
+
+input[type=button]:hover {
+    color:red;
+   }
+
+nav{
+display:flex; 
+justify-content:flex-end;
+}
+
+
+li:hover
+{
+color:white;
+}
+
+nav ul {
+
+display:flex; 
+justify-content:flex-end;
+list-style:none;
+color:brown;
+background-color:orange;
+margin:10px;
+height:100px;
+}
+nav li{
+
+display:flex;
+margin:20px;
+}
+li:nth-child(6) a
+{
+color:white;
+
+}
+
+
+h1 {
+
+color: brown
+
+}
+section{
+display:flex;
+}
+#contact
+{
+display:flex;
+}
+section p{
+
+background-color:orange;
+
+}
+section div{
+width:33%
+}
+section h3 {
+
+color: blue;
+background-color:cyan;
+}
+footer
+{
+background-color:cyan;
+
+}
+a{
+ text-decoration: none;
+ color:brown;
+}
+a:hover{
+ text-decoration: none;
+ color:white;
+}
+

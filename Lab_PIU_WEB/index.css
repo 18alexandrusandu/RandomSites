@@ -1,0 +1,86 @@
+body {
+margin:auto;
+width:80%;
+font:verdana;
+
+}
+
+h1 {
+
+color: brown
+
+}
+h4 {
+
+color: blue;
+background-color:cyan;
+}
+nav{
+display:flex; 
+justify-content:flex-end;
+}
+
+
+li:hover
+{
+color:white;
+}
+
+
+nav ul {
+
+display:flex; 
+justify-content:flex-end;
+list-style:none;
+color:brown;
+background-color:orange;
+margin:10px;
+height:100px;
+}
+nav li{
+
+display:flex;
+margin:20px;
+
+
+}
+a{
+    text-decoration: none;
+    color:brown;
+   }
+   a:hover{
+    text-decoration: none;
+    color:white;
+   }
+   
+li:nth-child(1) 
+{
+color:white;
+
+}
+
+
+
+
+
+section {
+
+display:flex
+
+}
+section p{
+
+background-color:orange;
+
+}
+section div{
+width:33%
+}
+
+
+
+footer
+{
+background-color:cyan;
+
+}
