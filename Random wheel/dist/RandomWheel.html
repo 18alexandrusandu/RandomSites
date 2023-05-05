@@ -1,0 +1,456 @@
+<html>
+<head>
+</head>
+<body>
+
+<div style="display: flex">
+<div "="" id="part1" style="width:50%;display:inline">
+<h1>Random wheel to help you choose</h1>
+<label>Add task </label>
+<input id="inp"/>
+<button id="submit" onclick="add_task()">submit </button>
+<br/>
+<label>Upload data from file</label>
+<input height="50px" id="many" type="file" width="50px"/>
+<br/>
+<canvas height="600px" id="can" width="600px"></canvas>
+<br/>
+</div>
+<div "="" id="part2" style="width:50%;display:inline">
+<br/>
+<br/>
+<br/>
+<br/>
+<button id="spin" onclick=" spinWheel() " style=" background-color:green ;width:100px; height:50px;
+font-size:30px">Spin</button>
+<br/>
+<br/>
+<p id="result" style="font-size:40px"></p>
+<canvas id="confetti-canvas" style="height:300px"></canvas>
+</div>
+</div>
+
+<script>var maxParticleCount = 150; //set max confetti count
+var particleSpeed = 2; //set the particle animation speed
+var startConfetti; //call to start confetti animation
+var stopConfetti; //call to stop adding confetti
+var toggleConfetti; //call to start or stop the confetti animation depending on whether it's already running
+var removeConfetti; //call to stop the confetti animation and remove all confetti immediately
+
+(function() {
+	startConfetti = startConfettiInner;
+	stopConfetti = stopConfettiInner;
+	toggleConfetti = toggleConfettiInner;
+	removeConfetti = removeConfettiInner;
+	var colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"]
+	var streamingConfetti = false;
+	var animationTimer = null;
+	var particles = [];
+	var waveAngle = 0;
+	
+	function resetParticle(particle, width, height) {
+		particle.color = colors[(Math.random() * colors.length) | 0];
+		particle.x = Math.random() * width;
+		particle.y = Math.random() * height - height;
+		particle.diameter = Math.random() * 10 + 5;
+		particle.tilt = Math.random() * 10 - 10;
+		particle.tiltAngleIncrement = Math.random() * 0.07 + 0.05;
+		particle.tiltAngle = 0;
+		return particle;
+	}
+
+	function startConfettiInner() {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		window.requestAnimFrame = (function() {
+			return window.requestAnimationFrame ||
+				window.webkitRequestAnimationFrame ||
+				window.mozRequestAnimationFrame ||
+				window.oRequestAnimationFrame ||
+				window.msRequestAnimationFrame ||
+				function (callback) {
+					return window.setTimeout(callback, 16.6666667);
+				};
+		})();
+		var canvas = document.getElementById("confetti-canvas");
+		if (canvas === null) {
+			canvas = document.createElement("canvas");
+			canvas.setAttribute("id", "confetti-canvas");
+			canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none");
+			document.body.appendChild(canvas);
+			canvas.width = width;
+			canvas.height = height;
+			window.addEventListener("resize", function() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}, true);
+		}
+		var context = canvas.getContext("2d");
+		while (particles.length < maxParticleCount)
+			particles.push(resetParticle({}, width, height));
+		streamingConfetti = true;
+		if (animationTimer === null) {
+			(function runAnimation() {
+				context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+				if (particles.length === 0)
+					animationTimer = null;
+				else {
+					updateParticles();
+					drawParticles(context);
+					animationTimer = requestAnimFrame(runAnimation);
+				}
+			})();
+		}
+	}
+
+	function stopConfettiInner() {
+		streamingConfetti = false;
+	}
+
+	function removeConfettiInner() {
+		stopConfetti();
+		particles = [];
+	}
+
+	function toggleConfettiInner() {
+		if (streamingConfetti)
+			stopConfettiInner();
+		else
+			startConfettiInner();
+	}
+
+	function drawParticles(context) {
+		var particle;
+		var x;
+		for (var i = 0; i < particles.length; i++) {
+			particle = particles[i];
+			context.beginPath();
+			context.lineWidth = particle.diameter;
+			context.strokeStyle = particle.color;
+			x = particle.x + particle.tilt;
+			context.moveTo(x + particle.diameter / 2, particle.y);
+			context.lineTo(x, particle.y + particle.tilt + particle.diameter / 2);
+			context.stroke();
+		}
+	}
+
+	function updateParticles() {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		var particle;
+		waveAngle += 0.01;
+		for (var i = 0; i < particles.length; i++) {
+			particle = particles[i];
+			if (!streamingConfetti && particle.y < -15)
+				particle.y = height + 100;
+			else {
+				particle.tiltAngle += particle.tiltAngleIncrement;
+				particle.x += Math.sin(waveAngle);
+				particle.y += (Math.cos(waveAngle) + particle.diameter + particleSpeed) * 0.5;
+				particle.tilt = Math.sin(particle.tiltAngle) * 15;
+			}
+			if (particle.x > width + 20 || particle.x < -20 || particle.y > height) {
+				if (streamingConfetti && particles.length <= maxParticleCount)
+					resetParticle(particle, width, height);
+				else {
+					particles.splice(i, 1);
+					i--;
+				}
+			}
+		}
+	}
+})();</script><script>var c = document.getElementById("can");
+var ctx = c.getContext("2d");
+
+
+ctx.beginPath();
+ctx.arc(250, 250, 200, 0, 2 * Math.PI);
+ctx.stroke();
+
+var reds=Math.floor(Math.random()*255)
+var greens=Math.floor(Math.random()*255)
+var blues=Math.floor(Math.random()*255)
+ctx.fillStyle = "rgba("+reds+"," +greens+", "+blues+", " + 1 + ")"; 
+ctx.fill();
+ctx.closePath();
+
+
+var tasks=[]
+var choosenTask;
+var timeOfSpinLower=1000
+var timeOfSpinUpper=20000
+var speed
+
+
+function draw_triangle()
+{
+ctx.beginPath();
+ ctx.moveTo(230,30);
+ ctx.lineTo(265,30);
+ ctx.lineTo(248,90);
+ ctx.lineTo(230,30);
+ctx.fillStyle = "black"
+ctx.fill();
+ctx.stroke();
+ctx.closePath();
+
+}
+
+
+
+
+
+
+function pausecomp(millis)
+{
+    var date = new Date();
+    var curDate = null;
+    do { curDate = new Date(); }
+    while(curDate-date < millis);
+}
+
+
+
+function build_tasks()
+{
+var size=0;
+for(var i=0;i<size;i++)
+{
+
+var red=Math.floor(Math.random()*255)
+var green=Math.floor(Math.random()*255)
+var blue=Math.floor(Math.random()*255)
+
+
+
+tasks.push({"red":red,"green":green,"blue":blue})
+
+
+
+}
+
+
+
+}
+
+
+function color_tasks(time)
+{
+var size=tasks.length;
+var per=2.0/size;
+console.log("size is",size)
+
+ctx.clearRect(0, 0, c.width, c.height);
+
+
+for(var i=0;i<size;i++)
+{
+
+var red=tasks[i]["red"]
+var green=tasks[i]["green"]
+var blue=tasks[i]["blue"]
+
+
+ctx.beginPath();
+ ctx.moveTo(250,250);
+ctx.arc(250, 250, 200, (i*per +time)*Math.PI, ((i+1)*per+time)*Math.PI);
+ctx.stroke()
+ctx.fillStyle = "rgba("+red+"," +green+", "+blue+", " + 1 + ")"; 
+
+ctx.fill()
+ctx.closePath();
+
+
+
+
+
+}
+draw_triangle()
+for(var i=0;i<size;i++)
+{
+ctx.beginPath();
+ctx.font = "30px Arial";
+
+var newx=230+200*Math.cos(((i+1)*per*Math.PI+i*per*Math.PI+2*time*Math.PI)/2)
+var newy=255+200*Math.sin(((i+1)*per*Math.PI+i*per*Math.PI+2*time*Math.PI)/2)
+
+ ctx.moveTo(250,250);
+if(tasks[i]["text"]==null)
+ctx.strokeText("Task"+i, newx,newy);	
+else
+ctx.strokeText(tasks[i]["text"], newx,newy);
+ctx.closePath();
+}
+
+
+
+
+
+
+
+}
+build_tasks()
+
+function add_task()
+{
+
+var red=Math.floor(Math.random()*255)
+var green=Math.floor(Math.random()*255)
+var blue=Math.floor(Math.random()*255)
+
+var inp=document.getElementById("inp").value;
+tasks.push({
+"text":inp,
+"red":red,
+"green":green,
+"blue":blue
+});
+color_tasks(0)
+
+
+}
+
+function add_many_tasks(evt)
+{
+
+console.log(evt)
+    let files = evt.target.files; // FileList object
+
+    // use the 1st file from the list
+    let f = files[0];
+
+    
+    let reader = new FileReader();
+reader.onload = event => {console.log(event.target.result);
+
+var data=event.target.result
+ var obj=JSON.parse(data)
+for(var d of obj)
+{
+
+var red=Math.floor(Math.random()*255)
+var green=Math.floor(Math.random()*255)
+var blue=Math.floor(Math.random()*255)
+
+
+tasks.push({
+"text":d[0],
+"red":red,
+"green":green,
+"blue":blue
+});
+
+}
+color_tasks(0)
+
+ // desired file content
+
+}
+reader.onerror = error => reject(error)
+      reader.readAsText(f);
+
+
+
+
+
+  }
+
+
+
+ document.getElementById('many').addEventListener('change', add_many_tasks, false);
+
+
+
+
+
+var t=0
+
+function areClockwise(v1x, v1y,v2x,v2y) {
+  return -v1x*v2y + v1y*v2x > 0;
+}
+
+
+
+
+function findWinner()
+{
+var time=t*0.05
+var right_angle=1.5*Math.PI
+var per=2.0/tasks.length;
+for(var i=0;i<tasks.length;i++)
+{
+var angle_start=(i*per +time)*Math.PI
+var angle_stop =((i+1)*per+time)*Math.PI
+
+if(!areClockwise(Math.cos(angle_start), Math.sin(angle_start) ,Math.cos( right_angle),Math.sin( right_angle)) && areClockwise(Math.cos(angle_stop),Math.sin(angle_stop),Math.cos( right_angle),Math.sin( right_angle)))
+return i
+
+
+}
+
+
+
+
+
+
+}
+
+
+
+function spinWheel()
+{
+var seted_time=timeOfSpinLower+Math.random()*(timeOfSpinUpper-timeOfSpinLower)
+var start_time=new Date()
+var intid=setInterval(function () {
+var cur_time=new Date();
+console.log(seted_time)
+console.log(cur_time-start_time)
+if(cur_time-start_time<seted_time)
+{
+t+=10;color_tasks(t*0.05)
+}
+else
+{
+color_tasks(t*0.05)
+clearInterval(intid);
+var winnerIndex=findWinner()
+console.log( "Winner is:",winnerIndex)
+
+var par=document.getElementById("result");
+if(tasks[winnerIndex]["text"])
+{
+par.textContent ="The chosen choice is:"+tasks[winnerIndex]["text"]
+
+}
+else
+{
+
+par.textContent ="The chosen choice is:"+"Task"+winnerIndex
+
+
+
+
+}
+startConfetti()
+}
+},200)
+
+
+
+}
+
+//color_tasks(0)
+
+
+
+
+
+
+
+
+
+
+
+
+</script></body>
+</html>

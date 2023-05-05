@@ -1,0 +1,56 @@
+<html>
+<head>
+
+
+</head>
+<body>
+<script type="text/javascript" src="confetti.js"></script>
+
+
+
+
+<div style="display: flex">
+<div id="part1" style="width:50%;display:inline"" >
+<h1>Random wheel to help you choose</h1>
+<label>Add task </label>
+<input  id="inp"/>
+<button id="submit" onclick="add_task()">submit </button>
+<br>
+<label>Upload data from file</label>
+<input type="file" width="50px" height="50px" id="many" />
+<br>
+
+
+<canvas id="can" width="600px" height="600px"></canvas>
+<br>
+
+
+
+</div>
+
+
+<div id="part2" style="width:50%;display:inline"" >
+<br>
+<br>
+<br>
+<br>
+<button id="spin"  onclick=" spinWheel() "  style=" background-color:green ;width:100px; height:50px;
+font-size:30px">Spin</button>
+<br>
+<br>
+<p id="result" style="font-size:40px"></p>
+<canvas id="confetti-canvas" style="height:300px"></canvas>
+</div>
+
+</div>
+
+<script type="text/javascript" src="wheel.js"></script>
+
+</body>
+
+
+
+
+</html>
+
+
